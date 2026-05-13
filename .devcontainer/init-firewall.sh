@@ -86,7 +86,7 @@ ipset create allowed-domains hash:net
 
 for domain in "${allowed_domains[@]}"; do
   echo "Resolving $domain"
-  ips="$(dig +short A "$domain" | sed '/^\s*$/d')"
+  ips="$(dig +short A "$domain" | grep -E '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' | sed '/^\s*$/d')"
   if [ -z "$ips" ]; then
     echo "ERROR: Failed to resolve $domain"
     exit 1
